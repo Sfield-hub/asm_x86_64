@@ -1,0 +1,12 @@
+*.obj
+*.exe
+*.dll
+*.pdb
+*.lib
+*.lst
+*.pyc
+*.pdf
+Books/
+__pycache__/
+.DS_Store
+tempCodeRunnerFile.python

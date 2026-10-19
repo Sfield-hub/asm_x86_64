@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug lea_function (RCX = 10)",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}\\lea_function_debug.exe",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Link lea_function debug app",
+      "stopAtEntry": true
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Assemble x64 source",
+      "type": "process",
+      "command": "${env:LOCALAPPDATA}\\bin\\NASM\\nasm.exe",
+      "args": [
+        "-f",
+        "win64",
+        "${workspaceFolder}\\main.asm",
+        "-o",
+        "${workspaceFolder}\\main.obj"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Assemble active x64 source",
+      "type": "process",
+      "command": "${env:LOCALAPPDATA}\\bin\\NASM\\nasm.exe",
+      "args": [
+        "-f",
+        "win64",
+        "${file}",
+        "-o",
+        "${fileDirname}\\${fileBasenameNoExtension}.obj"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Assemble lea_function with debug symbols",
+      "type": "process",
+      "command": "${env:LOCALAPPDATA}\\bin\\NASM\\nasm.exe",
+      "args": [
+        "-g",
+        "-F",
+        "cv8",
+        "-f",
+        "win64",
+        "${workspaceFolder}\\lea_function.asm",
+        "-o",
+        "${workspaceFolder}\\lea_function.debug.obj"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Assemble lea_function debug caller",
+      "type": "process",
+      "command": "${env:LOCALAPPDATA}\\bin\\NASM\\nasm.exe",
+      "args": [
+        "-g",
+        "-F",
+        "cv8",
+        "-f",
+        "win64",
+        "${workspaceFolder}\\lea_function_debug_main.asm",
+        "-o",
+        "${workspaceFolder}\\lea_function_debug_main.obj"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Link lea_function debug app",
+      "type": "process",
+      "command": "${env:LOCALAPPDATA}\\Programs\\llvm-mingw\\bin\\ld.lld.exe",
+      "args": [
+        "-flavor",
+        "link",
+        "/entry:main",
+        "/subsystem:console",
+        "/nodefaultlib",
+        "/debug",
+        "/pdb:${workspaceFolder}\\lea_function_debug.pdb",
+        "/out:${workspaceFolder}\\lea_function_debug.exe",
+        "${workspaceFolder}\\lea_function.debug.obj",
+        "${workspaceFolder}\\lea_function_debug_main.obj",
+        "${env:LOCALAPPDATA}\\Programs\\llvm-mingw\\x86_64-w64-mingw32\\lib\\libkernel32.a"
+      ],
+      "dependsOn": [
+        "Assemble lea_function with debug symbols",
+        "Assemble lea_function debug caller"
+      ],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build Windows x64 program",
+      "type": "process",
+      "command": "${env:LOCALAPPDATA}\\Programs\\llvm-mingw\\bin\\clang.exe",
+      "args": [
+        "${workspaceFolder}\\main.obj",
+        "-o",
+        "${workspaceFolder}\\main.exe"
+      ],
+      "dependsOn": "Assemble x64 source",
+      "dependsOrder": "sequence",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Windows x64 program",
+      "type": "process",
+      "command": "${workspaceFolder}\\main.exe",
+      "dependsOn": "Build Windows x64 program",
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    }
+  ]
+}

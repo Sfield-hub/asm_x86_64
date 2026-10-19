@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "*.asm": "nasm"
+  },
+  "debug.allowBreakpointsEverywhere": true,
+  "code-runner.showRunIconInEditorTitleMenu": true,
+  "code-runner.runInTerminal": true,
+  "code-runner.executorMapByFileExtension": {
+    ".asm": "powershell -NoProfile -ExecutionPolicy Bypass -File \"$workspaceRoot\\.vscode\\run-asm.ps1\" $fullFileName"
+  }
+}
